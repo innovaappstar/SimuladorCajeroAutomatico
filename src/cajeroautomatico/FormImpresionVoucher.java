@@ -9,15 +9,23 @@ package cajeroautomatico;
  *
  * @author Kenny
  */
-public class TipoOperacion extends javax.swing.JFrame {
+public class FormImpresionVoucher extends javax.swing.JFrame {
 
     /**
-     * Creates new form TipoOperacion
+     * Creates new form FormImpresionVoucher
      */
-    public TipoOperacion() {
+    public FormImpresionVoucher() {
         initComponents();
     }
 
+    
+    public FormImpresionVoucher(String montoRetiro, String montoDisponible) {
+        initComponents();
+        tvMontoRetiro.setText(montoRetiro);
+        tvMontoDisponible.setText(montoDisponible);
+    }
+
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,64 +36,57 @@ public class TipoOperacion extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        tvMontoRetiro = new javax.swing.JLabel();
+        tvMontoDisponible = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(null);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_item_consulta.png"))); // NOI18N
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 130, 160, 60);
+        tvMontoRetiro.setText("0");
+        jPanel1.add(tvMontoRetiro);
+        tvMontoRetiro.setBounds(240, 250, 41, 16);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_item_retiro.png"))); // NOI18N
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
+        tvMontoDisponible.setText("0");
+        jPanel1.add(tvMontoDisponible);
+        tvMontoDisponible.setBounds(240, 270, 70, 16);
+
+        jLabel3.setText("S/.");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 60, 160, 60);
+        jLabel3.setBounds(210, 270, 20, 16);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_opciones_cajero_fondo_vacio.jpg"))); // NOI18N
-        jLabel1.setText("jLabel1");
+        jLabel4.setText("DISPONIBLE");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(10, 270, 90, 16);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_voucher_efectivo_1.jpg"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(0, 0, 290, 410);
+
+        jLabel1.setText("GRACIAS");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(1, -4, 500, 318);
+        jLabel1.setBounds(90, 420, 100, 16);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
-        System.out.println("consulta");
-    }//GEN-LAST:event_jLabel2MouseClicked
-
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
-        System.out.println("retiro");
-        new FormSeleccionMonto().setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -104,20 +105,20 @@ public class TipoOperacion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormImpresionVoucher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormImpresionVoucher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormImpresionVoucher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormImpresionVoucher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TipoOperacion().setVisible(true);
+                new FormImpresionVoucher().setVisible(true);
             }
         });
     }
@@ -126,6 +127,9 @@ public class TipoOperacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel tvMontoDisponible;
+    private javax.swing.JLabel tvMontoRetiro;
     // End of variables declaration//GEN-END:variables
 }

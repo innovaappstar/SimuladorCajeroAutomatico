@@ -9,13 +9,19 @@ package cajeroautomatico;
  *
  * @author Kenny
  */
-public class TipoOperacion extends javax.swing.JFrame {
+public class FormRetiroEfectivo extends javax.swing.JFrame {
 
     /**
-     * Creates new form TipoOperacion
+     * Creates new form FormRetiroEfectivo
      */
-    public TipoOperacion() {
+    public FormRetiroEfectivo() {
         initComponents();
+    }
+    
+    
+    public FormRetiroEfectivo(String monto){
+        initComponents();
+        tvImporteRetiro.setText(monto);
     }
 
     /**
@@ -27,65 +33,78 @@ public class TipoOperacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        tvImporteRetiro = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+
+        jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(null);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_item_consulta.png"))); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 130, 160, 60);
+        jLabel2.setBounds(0, 260, 180, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_item_retiro.png"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
             }
         });
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 60, 160, 60);
+        jLabel3.setBounds(340, 260, 160, 40);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_opciones_cajero_fondo_vacio.jpg"))); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel4.setText("11/22/2018");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(380, 68, 70, 16);
+
+        tvImporteRetiro.setForeground(new java.awt.Color(0, 102, 255));
+        tvImporteRetiro.setText("0");
+        jPanel1.add(tvImporteRetiro);
+        tvImporteRetiro.setBounds(180, 113, 40, 16);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_retiro_efectivo.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(1, -4, 500, 318);
+        jLabel1.setBounds(1, -4, 500, 310);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
-        System.out.println("consulta");
-    }//GEN-LAST:event_jLabel2MouseClicked
-
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        System.out.println("retiro");
-        new FormSeleccionMonto().setVisible(true);
+        new FormRetiraTuTarjeta(tvImporteRetiro.getText().toString()).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        new FormRetiraTuTarjeta(tvImporteRetiro.getText().toString()).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -104,20 +123,20 @@ public class TipoOperacion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRetiroEfectivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRetiroEfectivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRetiroEfectivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TipoOperacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRetiroEfectivo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TipoOperacion().setVisible(true);
+                new FormRetiroEfectivo().setVisible(true);
             }
         });
     }
@@ -126,6 +145,9 @@ public class TipoOperacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel tvImporteRetiro;
     // End of variables declaration//GEN-END:variables
 }
