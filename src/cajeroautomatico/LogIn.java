@@ -86,12 +86,7 @@ public class LogIn extends javax.swing.JFrame {
             System.out.println("Bye");
         }
         
-//        
-//        try {
-//            getHttp();
-//        } catch (Exception ex) {
-//            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        new AutenticacionTask().execute();
     }
     
     /**

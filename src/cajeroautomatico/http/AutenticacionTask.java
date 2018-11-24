@@ -16,18 +16,11 @@ import org.json.JSONObject;
  */
 public class AutenticacionTask extends BaseAsyntask{
 
-    private final static String nomArrayJSON = "BUSQUEDARUTA";
+    private final static String nomArrayJSON = "AUTENTICACION";
     private final static String path = "/api/autenticacion";
     
     public AutenticacionTask(){
-        super(nomArrayJSON, path);
-//        super.URL = super.getURL2(host, ROUTES.PATH_BUSQUEDARUTAV2) + String.format(Locale.getDefault(),
-//                "pOrigen=%s&pDestino=%s&maxRangoControl=%s&maxRangoUnidad=10",
-//                URLEncoder.encode(pOrigen),
-//                URLEncoder.encode(pDEstino),
-//                URLEncoder.encode(rangoControl));
-//        this.onRutasCallback = onRutasCallback;
-        
+        super(nomArrayJSON, path, EHTTP.POST);
     }
      
     

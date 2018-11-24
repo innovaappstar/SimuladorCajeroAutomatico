@@ -28,7 +28,7 @@ public class Constantes {
 
     public final static int PUERTO = 2030;
     public final static int RESULT_OK = 1;
-    public final static int RESULT_ERROR = -1;  // 1 || 0
+    public final static int RESULT_ERROR = 0;  // 1 || 0
     public final static int RESULT_WARNING  = 0;
 
 

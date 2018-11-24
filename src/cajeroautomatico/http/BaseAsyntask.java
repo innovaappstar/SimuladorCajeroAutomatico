@@ -7,13 +7,16 @@ package cajeroautomatico.http;
 
 import cajeroautomatico.constantes.Constantes;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.InputStreamReader; 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 import sun.net.www.http.HttpClient;
 import org.json.*;
+
 
 /**
  *
@@ -22,11 +25,14 @@ import org.json.*;
 public abstract class BaseAsyntask {
     
     private String nomArrayJSON;
-    private String url;
+    protected String url;
     protected String HOST = "http://192.168.1.104:2030";
-    public BaseAsyntask(String nomArrayJSON, String url) {
+    private EHTTP ehttp;
+    
+    public BaseAsyntask(String nomArrayJSON, String url, EHTTP ehttp) {
         this.nomArrayJSON = nomArrayJSON;
         this.url = (HOST + url);
+        this.ehttp = ehttp;
     }
     
     public abstract void onPostDataJSON(int codEstado, JSONArray jsonArray)throws JSONException;
@@ -46,7 +52,7 @@ public abstract class BaseAsyntask {
      * devuelve respuesta exito/error
      */
     public void execute(){
-        String response = this.GET(this.url); // only get for the moment...
+        String response = (ehttp == EHTTP.GET)? this.GET(this.url): this.POST(this.url);
         this.onPostExecute(response);
     }
     
@@ -90,18 +96,39 @@ public abstract class BaseAsyntask {
     }
 
     
-    protected String GET(String urlString){
-        InputStream inputStream = null;
+    protected String GET(String urlString){ 
         String result = "";
         try
-        {
+        { 
             String responsestring = "";
             URL url = new URL(urlString);
             HttpURLConnection c = (HttpURLConnection)url.openConnection();  //connecting to url
             c.setRequestMethod("GET");
+            c.setRequestProperty("Content-type", "application/json");  
             result = this.convertInputStreamToString(c.getInputStream());
         } catch (Exception e) {
             // si no hay internet
+            System.err.println(e.getMessage());
+            this.onPostError(Constantes.RESULT_ERROR, e.getMessage());
+        }
+        return result;
+    }
+    
+    
+     
+    protected String POST(String urlString){ 
+        String result = "";
+        try
+        {  
+            URL url = new URL(urlString);
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setDoOutput(true);
+            httpCon.setRequestMethod("POST"); 
+            DataOutputStream wr = new DataOutputStream(httpCon.getOutputStream()); 
+            result = this.convertInputStreamToString(httpCon.getInputStream());  
+        } catch (Exception e) {
+            // si no hay internet
+            System.err.println(e.getMessage());
             this.onPostError(Constantes.RESULT_ERROR, e.getMessage());
         }
         return result;
@@ -125,6 +152,21 @@ public abstract class BaseAsyntask {
         inputStream.close();
         return result;
 
+    }
+    
+    public String reemplazarEspacios(String valor)
+    {
+        return valor.replaceAll(" ", "%20");
+    }
+
+    public String reemplazarSimbolos(String valor)
+    {
+        return valor.replace("'", "*").replace("|", "*").replace("\"", "");
+    }
+    
+    public enum EHTTP{
+        GET,
+        POST
     }
     
 }
