@@ -18,10 +18,10 @@ import org.json.JSONObject;
  *
  * @author Kenny
  */
-public class RegistroClienteTask extends BaseAsyntask{
+public class EdicionDatosClienteTask extends BaseAsyntask{
 
-    private final static String nomArrayJSON = "REGISTROCLIENTE";
-    private final static String path = "/api/registro_cliente";
+    private final static String nomArrayJSON = "UPDATECLIENTE";
+    private final static String path = "/api/edicion_cliente";
     private OnResult onResult;
     Cliente cliente;
     public interface OnResult
@@ -29,7 +29,7 @@ public class RegistroClienteTask extends BaseAsyntask{
         void onResult(int codResultado, String message , Cliente cliente);
     }
     
-    public RegistroClienteTask(Cliente cliente, OnResult onResult){
+    public EdicionDatosClienteTask(Cliente cliente, OnResult onResult){
         super(nomArrayJSON, String.format(Locale.getDefault(),
                 "%s/?numeroTarjeta=%s&claveTarjeta=%s&nombre=%s&direccion=%s&telefono=%s&saldo=%s", 
                 path, 

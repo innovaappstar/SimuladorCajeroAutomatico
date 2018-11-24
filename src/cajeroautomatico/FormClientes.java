@@ -8,6 +8,7 @@ package cajeroautomatico;
 import cajeroautomatico.adapter.ClienteAdapter;
 import cajeroautomatico.constantes.Constantes;
 import cajeroautomatico.entities.Cliente;
+import cajeroautomatico.http.EdicionDatosClienteTask;
 import cajeroautomatico.http.RegistroClienteTask;
 import cajeroautomatico.http.ReporteClienteTask;
 import java.io.BufferedReader;
@@ -36,7 +37,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * @author Kenny
  */
 public class FormClientes extends javax.swing.JFrame {
-
+    
+    private boolean ISEDITMODE = false;
+    
     /**
      * Creates new form FormClientes
      */
@@ -56,8 +59,11 @@ public class FormClientes extends javax.swing.JFrame {
                         etDireccion.setText(cliente.getDireccion());
                         etTelefono.setText(cliente.getTelefono());
                         etClaveTarjeta.setText(cliente.getClaveTarjeta());
+                        etSaldoActual.setText(String.valueOf(cliente.getSaldo()));
                         System.out.println("cliente ; " + cliente.getNombre());
                         enableViews(false);
+                        ISEDITMODE = false;
+                        tvInfoAccion.setText("*Info : Usuario Seleccionado..");
                     }
                 }
                 catch(Exception e){
@@ -68,50 +74,8 @@ public class FormClientes extends javax.swing.JFrame {
          
         
     }
+      
      
-    	private final String USER_AGENT = "Mozilla/5.0";
-
-    // HTTP POST request
-	private void sendPost() throws Exception {
-
-//		String url = "https://selfsolve.apple.com/wcResults.do";
-//		String url = "http://192.168.1.104:2030/api/reporte_clientes";
-		String url = "http://192.168.1.104:2030/api/reporte_clientes/?param=1 4224&param2=2 434&param=3 322&param4=2 1131&param5=12221 131313&param6=222223";
-              
-//		url = reemplazarEspacios(url);
-                
-                String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-
-                URL urlPath = new URL(url);
-                HttpURLConnection httpCon = (HttpURLConnection) urlPath.openConnection();
-                httpCon.setDoOutput(true);
-                httpCon.setRequestMethod("POST");
-//                OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
-                
-                DataOutputStream wr = new DataOutputStream(httpCon.getOutputStream());
-                wr.writeBytes(urlParameters);
-                wr.flush();
-                wr.close();
-                
-                BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
-                String inputLine;
-                StringBuffer res = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    res.append(inputLine);
-                }
-                in.close();
-//                
-                System.out.println(httpCon.getResponseCode());
-                System.out.println(httpCon.getResponseMessage());
-                System.out.println(res);
-//                out.close();
-                wr.close();
- 
-	}
-
-    
-    
     private void recargarLista(){
         new Thread(new Runnable() {
             @Override
@@ -164,6 +128,8 @@ public class FormClientes extends javax.swing.JFrame {
         tvInfoAccion = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         etClaveTarjeta = new javax.swing.JPasswordField();
+        etSaldoActual = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -174,10 +140,10 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(20, 10, 140, 16);
 
-        lvCLientes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        lvCLientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lvCLientesMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(lvCLientes);
 
@@ -195,6 +161,11 @@ public class FormClientes extends javax.swing.JFrame {
 
         etNumeroTarjeta.setEditable(false);
         etNumeroTarjeta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        etNumeroTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                etNumeroTarjetaKeyTyped(evt);
+            }
+        });
         jPanel1.add(etNumeroTarjeta);
         etNumeroTarjeta.setBounds(410, 130, 260, 40);
 
@@ -231,6 +202,11 @@ public class FormClientes extends javax.swing.JFrame {
         jLabel5.setBounds(410, 240, 160, 40);
 
         btnEditar.setText("Editar");
+        btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditarMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnEditar);
         btnEditar.setBounds(20, 370, 130, 25);
 
@@ -266,9 +242,9 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(tvInfoAccion);
         tvInfoAccion.setBounds(410, 480, 270, 60);
 
-        jLabel6.setText("Clave (4 dígitos)");
+        jLabel6.setText("Saldo Actual");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(410, 320, 130, 40);
+        jLabel6.setBounds(570, 320, 130, 40);
 
         etClaveTarjeta.setEditable(false);
         etClaveTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -279,12 +255,25 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(etClaveTarjeta);
         etClaveTarjeta.setBounds(410, 360, 120, 40);
 
+        etSaldoActual.setEditable(false);
+        etSaldoActual.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                etSaldoActualKeyTyped(evt);
+            }
+        });
+        jPanel1.add(etSaldoActual);
+        etSaldoActual.setBounds(570, 360, 110, 40);
+
+        jLabel7.setText("Clave (4 dígitos)");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(410, 320, 130, 40);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 809, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -307,7 +296,7 @@ public class FormClientes extends javax.swing.JFrame {
         clearViews();
         tvInfoAccion.setText("*info : Ingresar datos de nuevo cliente y guardar");
         btnGuardar.setEnabled(true);
-        
+        ISEDITMODE = false;
     }//GEN-LAST:event_btnAgregarUsuarioMouseClicked
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
@@ -319,32 +308,49 @@ public class FormClientes extends javax.swing.JFrame {
         cliente.setNombre(etNombreUsuario.getText());
         cliente.setNumeroTarjeta(etNumeroTarjeta.getText());
         cliente.setTelefono(etTelefono.getText());
-        
+        cliente.setSaldo(((etSaldoActual.getText()).length() == 0)? 0 : Double.parseDouble(etSaldoActual.getText().toString()));
         if(cliente.getClaveTarjeta().length() < 4 || cliente.getDireccion().length() == 0 ||
             cliente.getNombre().length() == 0 || cliente.getNumeroTarjeta().length() == 0 ||  cliente.getTelefono().length() < 9)
         {
-            JOptionPane.showMessageDialog(null, "Completar todos los campos, porfavor");
-
+            JOptionPane.showMessageDialog(null, "Completar todos los campos, porfavor"); 
         }else{ 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    new RegistroClienteTask(cliente, new RegistroClienteTask.OnResult() {
-                        @Override
-                        public void onResult(int codResultado, String message, Cliente cliente) {
-                            if(codResultado == Constantes.RESULT_ERROR)
-                            {
-                                JOptionPane.showMessageDialog(null, message);
-                                return;
+                    if(!ISEDITMODE)
+                        new RegistroClienteTask(cliente, new RegistroClienteTask.OnResult() {
+                            @Override
+                            public void onResult(int codResultado, String message, Cliente cliente) {
+                                if(codResultado == Constantes.RESULT_ERROR)
+                                {
+                                    JOptionPane.showMessageDialog(null, message);
+                                    return;
+                                }
+                                // podría agregarse la entidad cliente directamente al adaptador sin consultar el servicio http..
+                                recargarLista();
+                                clearViews();
+                                enableViews(false);
+                                btnGuardar.setEnabled(false);
+                                tvInfoAccion.setText("");
                             }
-                            // podría agregarse la entidad cliente directamente al adaptador sin consultar el servicio http..
-                            recargarLista();
-                            clearViews();
-                            enableViews(false);
-                            btnGuardar.setEnabled(false);
-                            tvInfoAccion.setText("");
-                        }
-                    }).execute(); 
+                        }).execute(); 
+                    else
+                        new EdicionDatosClienteTask(cliente, new EdicionDatosClienteTask.OnResult() {
+                            @Override
+                            public void onResult(int codResultado, String message, Cliente cliente) {
+                                if(codResultado == Constantes.RESULT_ERROR)
+                                {
+                                    JOptionPane.showMessageDialog(null, message);
+                                    return;
+                                }
+                                // podría agregarse la entidad cliente directamente al adaptador sin consultar el servicio http..
+                                recargarLista();
+                                clearViews();
+                                enableViews(false);
+                                btnGuardar.setEnabled(false);
+                                tvInfoAccion.setText("");
+                            }
+                        }).execute(); 
                 }
             }).start();
         } 
@@ -375,13 +381,47 @@ public class FormClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_etTelefonoKeyTyped
 
     private void btnSeleccionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSeleccionarMouseClicked
-        try { 
-            sendPost();
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-//            Logger.getLogger(FormClientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_btnSeleccionarMouseClicked
+
+    private void etSaldoActualKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_etSaldoActualKeyTyped
+        // TODO add your handling code here:
+        char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter))){
+            evt.consume();
+            return;
+        }        
+        if(etSaldoActual.getText().length() > 5) {  
+           evt.consume(); 
+        }
+    }//GEN-LAST:event_etSaldoActualKeyTyped
+
+    private void etNumeroTarjetaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_etNumeroTarjetaKeyTyped
+        // TODO add your handling code here:
+        char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter))){
+            evt.consume();
+            return;
+        }        
+        if(etNumeroTarjeta.getText().length() > 16) {  
+           evt.consume(); 
+        }
+        
+    }//GEN-LAST:event_etNumeroTarjetaKeyTyped
+
+    private void btnEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseClicked
+        // TODO add your handling code here:
+        ISEDITMODE = true;
+        enableViews(true);
+        // bloqueamos algunas vistas no editables
+        etNumeroTarjeta.setEditable(false); 
+        btnGuardar.setEnabled(true);
+        tvInfoAccion.setText("*Info : Módo de edición habilitado.");
+    }//GEN-LAST:event_btnEditarMouseClicked
+
+    private void lvCLientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lvCLientesMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lvCLientesMouseClicked
 
     public void enableViews(boolean isEnable){
 //        etDireccion.setEnabled(isEnable);
@@ -395,7 +435,7 @@ public class FormClientes extends javax.swing.JFrame {
         etNumeroTarjeta.setEditable(isEnable);
         etTelefono.setEditable(isEnable);
         etClaveTarjeta.setEditable(isEnable);
-        
+        etSaldoActual.setEditable(isEnable);
         
 //        btnGuardar.setEnabled(isDisable); 
     }
@@ -406,6 +446,7 @@ public class FormClientes extends javax.swing.JFrame {
         etNumeroTarjeta.setText("");
         etTelefono.setText(""); 
         etClaveTarjeta.setText("");
+        etSaldoActual.setText("");
     }
     
     /**
@@ -452,6 +493,7 @@ public class FormClientes extends javax.swing.JFrame {
     private javax.swing.JTextField etDireccion;
     private javax.swing.JTextField etNombreUsuario;
     private javax.swing.JTextField etNumeroTarjeta;
+    private javax.swing.JTextField etSaldoActual;
     private javax.swing.JTextField etTelefono;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -459,6 +501,7 @@ public class FormClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> lvCLientes;

@@ -16,7 +16,16 @@ public class Cliente {
     String claveTarjeta;
     String direccion;
     String telefono;
+    double saldo;
 
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+    
     public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
