@@ -5,6 +5,13 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.http.AutenticacionTask;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -47,6 +54,24 @@ public class LogIn extends javax.swing.JFrame {
         isCloseProgram = false;
     }
     
+    
+    private void getHttp()throws Exception
+    {
+//        String urlString = "http://192.168.1.104:2030/api/autenticacion";
+//        String responsestring = "";
+//        URL url = new URL(urlString);
+//        HttpURLConnection c = (HttpURLConnection)url.openConnection();  //connecting to url
+//        c.setRequestMethod("GET");
+//        BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));  //stream to resource
+//        String str;
+//        while ((str = in.readLine()) != null)   //reading data
+//           responsestring += str+"\n";//process the response and save it in some string or so
+//        in.close();  //closing stream
+//        System.err.println(responsestring);
+        
+        new AutenticacionTask().execute();
+    }
+    
     private void deleteValue(){
         String password = etPassword.getText().toString();
         if(password.length() > 0)
@@ -61,6 +86,12 @@ public class LogIn extends javax.swing.JFrame {
             System.out.println("Bye");
         }
         
+//        
+//        try {
+//            getHttp();
+//        } catch (Exception ex) {
+//            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     /**
