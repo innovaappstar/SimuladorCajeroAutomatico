@@ -98,6 +98,7 @@ public class JSONUtils {
         String aux = "";
         try {
             aux = jsonObject.isNull(name) ? "" : jsonObject.getString(name);
+            System.out.println("aux " + aux);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

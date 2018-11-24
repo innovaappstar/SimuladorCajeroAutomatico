@@ -5,6 +5,8 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.constantes.Constantes;
+import cajeroautomatico.entities.Cliente;
 import cajeroautomatico.http.AutenticacionTask;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,11 +24,21 @@ public class LogIn extends javax.swing.JFrame {
 
     boolean isCloseProgram = false;
     private final String PASSWORDUSERDEFAULT = "9876";
+    private Cliente clienteSeleccionado = new Cliente();
+    
     /**
      * Creates new form LogIn
      */
     public LogIn() {
         initComponents();
+    }
+    
+    /**
+     * Creates new form LogIn
+     */
+    public LogIn(Cliente cliente) {
+        initComponents();
+        this.clienteSeleccionado = cliente;
     }
 
     private void addValue(String digito){
@@ -36,41 +48,25 @@ public class LogIn extends javax.swing.JFrame {
         
         if(password.length() == 4)
         {
-            if(password.equals(PASSWORDUSERDEFAULT))
-            {
-                System.out.println("OTRA VENTANA");
-                new TipoOperacion().setVisible(true);
-                dispose();
-                return;
-            }else
-            {
-                JOptionPane.showMessageDialog(null, "Error de Acceso!");
-                etPassword.setText("");
-                isCloseProgram = true;  // habilitado para que se cierre si es que se presiona el botoón X
-            }
+            new AutenticacionTask(clienteSeleccionado, etPassword.getText(), new AutenticacionTask.OnResult() {
+                @Override
+                public void onResult(int codResultado, String message, Cliente cliente) {
+                    if(codResultado == Constantes.RESULT_ERROR)
+                    {
+                        JOptionPane.showMessageDialog(null, message);
+                        return;
+                    }
+                    new TipoOperacion().setVisible(true);
+                    dispose();                    
+                }
+            }).execute(); 
         }
         
         
         isCloseProgram = false;
     }
     
-    
-    private void getHttp()throws Exception
-    {
-//        String urlString = "http://192.168.1.104:2030/api/autenticacion";
-//        String responsestring = "";
-//        URL url = new URL(urlString);
-//        HttpURLConnection c = (HttpURLConnection)url.openConnection();  //connecting to url
-//        c.setRequestMethod("GET");
-//        BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));  //stream to resource
-//        String str;
-//        while ((str = in.readLine()) != null)   //reading data
-//           responsestring += str+"\n";//process the response and save it in some string or so
-//        in.close();  //closing stream
-//        System.err.println(responsestring);
-        
-        new AutenticacionTask().execute();
-    }
+     
     
     private void deleteValue(){
         String password = etPassword.getText().toString();
@@ -85,8 +81,7 @@ public class LogIn extends javax.swing.JFrame {
                 dispose();
             System.out.println("Bye");
         }
-        
-        new AutenticacionTask().execute();
+         
     }
     
     /**

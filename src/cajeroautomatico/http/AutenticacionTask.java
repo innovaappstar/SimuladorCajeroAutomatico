@@ -5,7 +5,10 @@
  */
 package cajeroautomatico.http;
 
+import cajeroautomatico.constantes.Constantes;
+import cajeroautomatico.entities.Cliente;
 import cajeroautomatico.utils.JSONUtils;
+import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,24 +21,44 @@ public class AutenticacionTask extends BaseAsyntask{
 
     private final static String nomArrayJSON = "AUTENTICACION";
     private final static String path = "/api/autenticacion";
+    private OnResult onResult;
     
-    public AutenticacionTask(){
-        super(nomArrayJSON, path, EHTTP.POST);
+    public interface OnResult
+    {
+        void onResult(int codResultado, String message , Cliente cliente);
+    }
+        
+    public AutenticacionTask(Cliente cliente, String claveTarjeta, OnResult onResult){
+//        super(nomArrayJSON, path, EHTTP.POST); 
+        super(nomArrayJSON, String.format(Locale.getDefault(),
+                "%s/?numeroTarjeta=%s&claveTarjeta=%s", 
+                path, 
+                cliente.getNumeroTarjeta(), 
+                claveTarjeta), EHTTP.GET); 
+        this.onResult = onResult;
     }
      
     
     public void onPostDataJSONObject(int codEstado, JSONObject jsonObject)throws JSONException
     {
         // only the childs to use this method
-        JSONObject objConfigUsuario = jsonObject.getJSONObject(nomArrayJSON);
+        JSONObject jsonCliente = jsonObject.getJSONObject(nomArrayJSON);
+        Cliente cliente = new Cliente();
 
-        int codResultado = JSONUtils.verificarInteger(objConfigUsuario, COLNAMES.CODRESULTADO.getString());
-        String desResultado = JSONUtils.verificarString(objConfigUsuario, COLNAMES.DESRESULTADO.getString());
-        int idSQLite1 = JSONUtils.verificarInteger(objConfigUsuario, COLNAMES.IDSQLITE.getString());
-        
-        System.out.println("---------------");
-        System.out.println(desResultado);
+        int codResultado = JSONUtils.verificarInteger(jsonCliente, COLNAMES.CODRESULTADO.getString());
+        String desResultado = JSONUtils.verificarString(jsonCliente, COLNAMES.DESRESULTADO.getString()); 
+        if(codResultado == Constantes.RESULT_OK){ 
+            jsonCliente = jsonCliente.getJSONObject(COLNAMES.CLIENTE.getString());
 
+            cliente.setNumeroTarjeta(JSONUtils.verificarString(jsonCliente, COLNAMES.NUMEROTARJETA.getString()));
+            cliente.setNombre(JSONUtils.verificarString(jsonCliente, COLNAMES.NOMBRE.getString()));
+            cliente.setClaveTarjeta(JSONUtils.verificarString(jsonCliente, COLNAMES.CLAVETARJETA.getString()));
+            cliente.setDireccion(JSONUtils.verificarString(jsonCliente, COLNAMES.DIRECCION.getString()));
+            cliente.setTelefono(JSONUtils.verificarString(jsonCliente, COLNAMES.TELEFONO.getString()));  
+            cliente.setSaldo(Float.valueOf(JSONUtils.verificarString(jsonCliente, COLNAMES.SALDO.getString()))); 
+           
+        } 
+        this.onResult.onResult(codResultado, desResultado, cliente);
     }
 
     @Override
@@ -43,13 +66,18 @@ public class AutenticacionTask extends BaseAsyntask{
     }
     
     public enum COLNAMES
-    {
-        IDSQLITE                ("_idSQLite"),
+    { 
         DESRESULTADO            ("DesResultado"),
-        CODRESULTADO            ("CodResultado"),
-        NOMBREUSUARIO           ("nombre"),
-        RESULT                  ("result");
-
+        CODRESULTADO            ("CodResultado"), 
+        CLIENTE                 ("Cliente"), 
+        
+        NUMEROTARJETA           ("numeroTarjeta"),
+        NOMBRE                  ("nombre"),
+        CLAVETARJETA            ("claveTarjeta"),
+        TELEFONO                ("telefono"),
+        SALDO                   ("saldo"),
+        DIRECCION               ("direccion");
+ 
         String s;
         COLNAMES(String s)
         {

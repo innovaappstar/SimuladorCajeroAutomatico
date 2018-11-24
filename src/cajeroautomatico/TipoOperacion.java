@@ -5,17 +5,28 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.entities.Cliente;
+
 /**
  *
  * @author Kenny
  */
 public class TipoOperacion extends javax.swing.JFrame {
+    private Cliente clienteSeleccionado = new Cliente();
 
     /**
      * Creates new form TipoOperacion
      */
     public TipoOperacion() {
         initComponents();
+    }
+    
+    /**
+     * Creates new form TipoOperacion
+     */
+    public TipoOperacion(Cliente cliente) {
+        initComponents();
+        this.clienteSeleccionado = cliente;
     }
 
     /**

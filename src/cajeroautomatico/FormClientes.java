@@ -39,6 +39,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class FormClientes extends javax.swing.JFrame {
     
     private boolean ISEDITMODE = false;
+    private Cliente clienteSeleccionado = new Cliente();
     
     /**
      * Creates new form FormClientes
@@ -64,6 +65,7 @@ public class FormClientes extends javax.swing.JFrame {
                         enableViews(false);
                         ISEDITMODE = false;
                         tvInfoAccion.setText("*Info : Usuario Seleccionado..");
+                        clienteSeleccionado = cliente;
                     }
                 }
                 catch(Exception e){
@@ -125,11 +127,14 @@ public class FormClientes extends javax.swing.JFrame {
         btnAgregarUsuario = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        tvInfoAccion = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         etClaveTarjeta = new javax.swing.JPasswordField();
         etSaldoActual = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        tvInfoAccion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,7 +160,7 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(etNombreUsuario);
         etNombreUsuario.setBounds(410, 60, 260, 40);
 
-        jLabel2.setText("Nombre Usuario");
+        jLabel2.setText("Nombre Cliente");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(410, 20, 110, 40);
 
@@ -169,9 +174,9 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(etNumeroTarjeta);
         etNumeroTarjeta.setBounds(410, 130, 260, 40);
 
-        jLabel3.setText("Número Tarjeta");
+        jLabel3.setText("Número Tarjeta (16 dígitos máx)");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(410, 90, 110, 40);
+        jLabel3.setBounds(410, 90, 200, 40);
 
         etDireccion.setEditable(false);
         etDireccion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -208,25 +213,25 @@ public class FormClientes extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnEditar);
-        btnEditar.setBounds(20, 370, 130, 25);
+        btnEditar.setBounds(190, 330, 150, 50);
 
-        btnAgregarUsuario.setText("Agregar Usuario");
+        btnAgregarUsuario.setText("Agregar Cliente");
         btnAgregarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAgregarUsuarioMouseClicked(evt);
             }
         });
         jPanel1.add(btnAgregarUsuario);
-        btnAgregarUsuario.setBounds(20, 330, 130, 25);
+        btnAgregarUsuario.setBounds(20, 330, 150, 50);
 
-        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.setText("Seleccionar Usuario");
         btnSeleccionar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSeleccionarMouseClicked(evt);
             }
         });
         jPanel1.add(btnSeleccionar);
-        btnSeleccionar.setBounds(20, 420, 130, 25);
+        btnSeleccionar.setBounds(20, 475, 160, 50);
 
         btnGuardar.setText("Guardar");
         btnGuardar.setEnabled(false);
@@ -236,11 +241,7 @@ public class FormClientes extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnGuardar);
-        btnGuardar.setBounds(410, 450, 110, 25);
-
-        tvInfoAccion.setText("*info");
-        jPanel1.add(tvInfoAccion);
-        tvInfoAccion.setBounds(410, 480, 270, 60);
+        btnGuardar.setBounds(410, 435, 130, 40);
 
         jLabel6.setText("Saldo Actual");
         jPanel1.add(jLabel6);
@@ -268,13 +269,41 @@ public class FormClientes extends javax.swing.JFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(410, 320, 130, 40);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Guía"));
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Agregar Cliente\nPuede registrar un nuevo usuario.\n\nEditar \nLa edición se puede realizar a cualquier\ncliente que se muestre en la lista.\n\nSeleccionar Usuario\nIniciará el programa con el número \nde tarjeta del usuario seleccionado.");
+        jScrollPane2.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(710, 40, 320, 280);
+
+        tvInfoAccion.setText("*info");
+        jPanel1.add(tvInfoAccion);
+        tvInfoAccion.setBounds(710, 330, 242, 52);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 809, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1034, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,7 +410,12 @@ public class FormClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_etTelefonoKeyTyped
 
     private void btnSeleccionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSeleccionarMouseClicked
-        
+        if(clienteSeleccionado.getNumeroTarjeta().length() != 0){
+            new SplashScreen(clienteSeleccionado).setVisible(true);
+            dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar algún cliente de la lista.");
+        }
     }//GEN-LAST:event_btnSeleccionarMouseClicked
 
     private void etSaldoActualKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_etSaldoActualKeyTyped
@@ -503,7 +537,10 @@ public class FormClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JList<String> lvCLientes;
     private javax.swing.JLabel tvInfoAccion;
     // End of variables declaration//GEN-END:variables

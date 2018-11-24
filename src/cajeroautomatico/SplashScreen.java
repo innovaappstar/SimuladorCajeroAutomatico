@@ -5,6 +5,7 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.entities.Cliente;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ public class SplashScreen extends javax.swing.JFrame {
     /**
      * Creates new form SplashScreen
      */
-    public SplashScreen() {
+    public SplashScreen(Cliente cliente) {
         initComponents();
         System.out.println("Hola mundo, splash screen");
         new Thread(new Runnable() {
@@ -34,11 +35,19 @@ public class SplashScreen extends javax.swing.JFrame {
                     }
                 } while (pbarCargando.getValue() < 100);
                 System.out.println("Saltar al siguiente formulario");
-                new LogIn().setVisible(true);
+                new LogIn(cliente).setVisible(true);
                 dispose();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }).start();
+    }
+    
+    
+    /**
+     * Creates new form SplashScreen
+     */
+    public SplashScreen() {
+        initComponents();
     }
 
     /**
