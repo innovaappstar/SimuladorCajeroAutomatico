@@ -3,9 +3,8 @@
 ### Que funciones realiza este repositorio? 
 * Registro y edición de clientes. 
 * Retiro de dinero.
-* [Aprender más](https://github.com/ikarus23/MifareClassicTool) 
 ### Dependencias
-* [Descargar e importar ] (https://mvnrepository.com/artifact/org.json/json/20131018) 
+* [Descargar json.jar](https://mvnrepository.com/artifact/org.json/json/20131018) 
 ### Implementar JAR
 To add JAR files to your web application, follow these steps.
 Download the JAR files to your computer.
