@@ -97,8 +97,7 @@ public class JSONUtils {
     public static String verificarString(JSONObject jsonObject, String name) {
         String aux = "";
         try {
-            aux = jsonObject.isNull(name) ? "" : jsonObject.getString(name);
-            System.out.println("aux " + aux);
+            aux = jsonObject.isNull(name) ? "" : jsonObject.getString(name); 
         } catch (Exception ex) {
             ex.printStackTrace();
         }

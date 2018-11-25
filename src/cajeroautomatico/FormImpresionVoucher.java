@@ -5,11 +5,16 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.entities.Cliente;
+import java.util.Locale;
+
 /**
  *
  * @author Kenny
  */
 public class FormImpresionVoucher extends javax.swing.JFrame {
+    private Cliente clienteSeleccionado = new Cliente();
+//    private String monto;
 
     /**
      * Creates new form FormImpresionVoucher
@@ -19,10 +24,12 @@ public class FormImpresionVoucher extends javax.swing.JFrame {
     }
 
     
-    public FormImpresionVoucher(String montoRetiro, String montoDisponible) {
-        initComponents();
+    public FormImpresionVoucher(Cliente cliente, String montoRetiro) {
+        initComponents(); 
+        this.clienteSeleccionado = cliente;
+//        this.monto = montoRetiro;
+        tvMontoDisponible.setText(String.format(Locale.getDefault(), "%.2f", cliente.getSaldo())); 
         tvMontoRetiro.setText(montoRetiro);
-        tvMontoDisponible.setText(montoDisponible);
     }
 
         

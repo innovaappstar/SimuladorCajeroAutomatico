@@ -5,6 +5,7 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.entities.Cliente;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,19 +14,16 @@ import java.util.logging.Logger;
  * @author Kenny
  */
 public class FormRetiraTuTarjeta extends javax.swing.JFrame {
-
-      /**
-     * Creates new form FormRetiraTuTarjeta
-     */
-    public FormRetiraTuTarjeta() {
-        initComponents(); 
-    }
-    
+    private Cliente clienteSeleccionado = new Cliente();
+    private String monto;
+   
     /**
-     * Creates new form FormRetiraTuTarjeta
+     * Creates new form TipoOperacion
      */
-    public FormRetiraTuTarjeta(String montoRetiro) {
+    public FormRetiraTuTarjeta(Cliente cliente, String montoRetiro) {
         initComponents();
+        this.clienteSeleccionado = cliente;
+        this.monto = montoRetiro;
         System.out.println("Hola mundo, splash screen");
         new Thread(new Runnable() {
             @Override
@@ -42,11 +40,26 @@ public class FormRetiraTuTarjeta extends javax.swing.JFrame {
                 } while (pbarCargando.getValue() < 100);
                 System.out.println("Saltar al siguiente formulario");
                 // PENDIENTE : hacer operación de monto disponible ...
-                new FormImpresionVoucher(montoRetiro, "1000").setVisible(true);
+                new FormImpresionVoucher(clienteSeleccionado, montoRetiro).setVisible(true);
                 dispose();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }).start();
+    }
+
+    
+      /**
+     * Creates new form FormRetiraTuTarjeta
+     */
+    public FormRetiraTuTarjeta() {
+        initComponents(); 
+    }
+    
+    /**
+     * Creates new form FormRetiraTuTarjeta
+     */
+    public FormRetiraTuTarjeta(String montoRetiro) {
+        initComponents();
     }
 
     /**

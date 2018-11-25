@@ -39,6 +39,7 @@ public class LogIn extends javax.swing.JFrame {
     public LogIn(Cliente cliente) {
         initComponents();
         this.clienteSeleccionado = cliente;
+        tvUsername.setText(cliente.getNombre());
     }
 
     private void addValue(String digito){
@@ -54,9 +55,10 @@ public class LogIn extends javax.swing.JFrame {
                     if(codResultado == Constantes.RESULT_ERROR)
                     {
                         JOptionPane.showMessageDialog(null, message);
+                        etPassword.setText("");
                         return;
                     }
-                    new TipoOperacion().setVisible(true);
+                    new TipoOperacion(cliente).setVisible(true);
                     dispose();                    
                 }
             }).execute(); 
@@ -107,6 +109,7 @@ public class LogIn extends javax.swing.JFrame {
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         etPassword = new javax.swing.JPasswordField();
+        tvUsername = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -238,6 +241,11 @@ public class LogIn extends javax.swing.JFrame {
         jPanel1.add(etPassword);
         etPassword.setBounds(30, 250, 150, 50);
 
+        tvUsername.setForeground(new java.awt.Color(0, 153, 204));
+        tvUsername.setText("username");
+        jPanel1.add(tvUsername);
+        tvUsername.setBounds(105, 90, 210, 16);
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_login.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 500, 318);
@@ -366,5 +374,6 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel tvUsername;
     // End of variables declaration//GEN-END:variables
 }

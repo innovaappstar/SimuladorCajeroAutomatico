@@ -5,12 +5,30 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.entities.Cliente;
+import java.util.Locale;
+
 /**
  *
  * @author Kenny
  */
 public class FormRetiroEfectivo extends javax.swing.JFrame {
+    private Cliente clienteSeleccionado = new Cliente();
 
+    String montoRetiro;
+    
+    /**
+     * Creates new form TipoOperacion
+     */
+    public FormRetiroEfectivo(Cliente cliente, String montoRetiro) {
+        initComponents();
+        this.clienteSeleccionado = cliente;
+        this.montoRetiro = montoRetiro;
+        tvImporteRetiro.setText(montoRetiro);
+        tvSaldoDisponible.setText(String.format(Locale.getDefault(), "%.2f", cliente.getSaldo()));
+        tvNumeroTarjeta.setText(cliente.getNumeroTarjeta());
+    }
+    
     /**
      * Creates new form FormRetiroEfectivo
      */
@@ -37,9 +55,11 @@ public class FormRetiroEfectivo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         tvImporteRetiro = new javax.swing.JLabel();
+        tvSaldoDisponible = new javax.swing.JLabel();
+        tvNumeroTarjeta = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        tvImporteRetiro1 = new javax.swing.JLabel();
 
         jLabel5.setText("jLabel5");
 
@@ -63,20 +83,30 @@ public class FormRetiroEfectivo extends javax.swing.JFrame {
         jPanel1.add(jLabel3);
         jLabel3.setBounds(340, 260, 160, 40);
 
-        jLabel4.setForeground(new java.awt.Color(0, 102, 255));
-        jLabel4.setText("11/22/2018");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(380, 68, 70, 16);
-
-        tvImporteRetiro.setForeground(new java.awt.Color(0, 102, 255));
+        tvImporteRetiro.setForeground(new java.awt.Color(0, 153, 204));
         tvImporteRetiro.setText("0");
         jPanel1.add(tvImporteRetiro);
-        tvImporteRetiro.setBounds(180, 113, 40, 16);
+        tvImporteRetiro.setBounds(180, 113, 110, 16);
+
+        tvSaldoDisponible.setForeground(new java.awt.Color(0, 153, 204));
+        tvSaldoDisponible.setText("0");
+        jPanel1.add(tvSaldoDisponible);
+        tvSaldoDisponible.setBounds(420, 115, 70, 16);
+
+        tvNumeroTarjeta.setForeground(new java.awt.Color(0, 153, 204));
+        tvNumeroTarjeta.setText("0");
+        jPanel1.add(tvNumeroTarjeta);
+        tvNumeroTarjeta.setBounds(170, 90, 170, 20);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bg_retiro_efectivo.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(1, -4, 500, 310);
+
+        tvImporteRetiro1.setForeground(new java.awt.Color(0, 153, 204));
+        tvImporteRetiro1.setText("0");
+        jPanel1.add(tvImporteRetiro1);
+        tvImporteRetiro1.setBounds(180, 113, 40, 16);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,7 +132,7 @@ public class FormRetiroEfectivo extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        new FormRetiraTuTarjeta(tvImporteRetiro.getText().toString()).setVisible(true);
+        new FormRetiraTuTarjeta(this.clienteSeleccionado, montoRetiro).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
@@ -145,9 +175,11 @@ public class FormRetiroEfectivo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel tvImporteRetiro;
+    private javax.swing.JLabel tvImporteRetiro1;
+    private javax.swing.JLabel tvNumeroTarjeta;
+    private javax.swing.JLabel tvSaldoDisponible;
     // End of variables declaration//GEN-END:variables
 }

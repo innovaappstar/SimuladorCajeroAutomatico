@@ -5,11 +5,20 @@
  */
 package cajeroautomatico;
 
+import cajeroautomatico.constantes.Constantes;
+import cajeroautomatico.entities.Cliente;
+import cajeroautomatico.http.AutenticacionTask;
+import cajeroautomatico.http.EdicionSaldoClienteTask;
+import cajeroautomatico.http.SaldoClienteTask;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Kenny
  */
 public class FormSeleccionMonto extends javax.swing.JFrame {
+    private Cliente clienteSeleccionado = new Cliente();
 
     /**
      * Creates new form FormSeleccionMonto
@@ -18,6 +27,15 @@ public class FormSeleccionMonto extends javax.swing.JFrame {
         initComponents();
     }
 
+    /**
+     * Creates new form TipoOperacion
+     */
+    public FormSeleccionMonto(Cliente cliente) {
+        initComponents();
+        this.clienteSeleccionado = cliente;
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,7 +53,7 @@ public class FormSeleccionMonto extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        tvContinuarRetiro = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -97,13 +115,13 @@ public class FormSeleccionMonto extends javax.swing.JFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(350, 200, 140, 30);
 
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        tvContinuarRetiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
+                tvContinuarRetiroMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(320, 270, 170, 30);
+        jPanel1.add(tvContinuarRetiro);
+        tvContinuarRetiro.setBounds(320, 270, 170, 30);
 
         jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -163,15 +181,51 @@ public class FormSeleccionMonto extends javax.swing.JFrame {
         etMonto.setText("400");
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+    private void tvContinuarRetiroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tvContinuarRetiroMouseClicked
         // TODO add your handling code here: 
         // si es vacío, entonces no saltamos a la siguiente ventana..
         if(etMonto.getText().toString().length() == 0)
             return;
+         
+        // recuperamos el saldo actual del momento.. por seguridad
+        new SaldoClienteTask(clienteSeleccionado, new SaldoClienteTask.OnResult() {
+            @Override
+            public void onResult(int codResultado, String message, Cliente cliente) {
+                if(codResultado == Constantes.RESULT_ERROR)
+                {
+                    JOptionPane.showMessageDialog(null, message);
+                    return;
+                } 
+                double montoRetiro = Double.valueOf(etMonto.getText()); 
+                if(cliente.getSaldo() < montoRetiro )
+                {
+                    new FormSaldoInsuficiente(cliente).setVisible(true);
+                    dispose();
+                }
+                else
+                {
+                    double saldoFinal = (cliente.getSaldo() - montoRetiro);
+                    String saldoFinalFormateado = String.format(Locale.getDefault(), "%.2f", saldoFinal);
+                    clienteSeleccionado.setSaldo(saldoFinal);
+                    // RETIRAR EFECTIVO, ACTUALIZAR SALDO USUARIO
+                    new EdicionSaldoClienteTask(clienteSeleccionado, saldoFinalFormateado, new EdicionSaldoClienteTask.OnResult() {
+                        @Override
+                        public void onResult(int codResultado, String message, Cliente cliente) { 
+                            if(codResultado == Constantes.RESULT_ERROR)
+                            {
+                                JOptionPane.showMessageDialog(null, message);
+                                return;
+                            } 
+                            new FormRetiroEfectivo(clienteSeleccionado, etMonto.getText()).setVisible(true);
+                            dispose(); 
+                        }
+                    }).execute();
+                }
+                
+            }
+        }).execute();  
         
-        new FormRetiroEfectivo(etMonto.getText().toString()).setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
+    }//GEN-LAST:event_tvContinuarRetiroMouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
@@ -222,8 +276,8 @@ public class FormSeleccionMonto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel tvContinuarRetiro;
     // End of variables declaration//GEN-END:variables
 }
