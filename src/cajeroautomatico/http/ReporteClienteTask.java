@@ -56,7 +56,7 @@ public class ReporteClienteTask extends BaseAsyntask{
             cliente.setClaveTarjeta(JSONUtils.verificarString(jsonCliente, COLNAMES.CLAVETARJETA.getString()));
             cliente.setDireccion(JSONUtils.verificarString(jsonCliente, COLNAMES.DIRECCION.getString()));
             cliente.setTelefono(JSONUtils.verificarString(jsonCliente, COLNAMES.TELEFONO.getString())); 
-            cliente.setSaldo(Float.valueOf(JSONUtils.verificarString(jsonCliente, COLNAMES.SALDO.getString()))); 
+            cliente.setSaldo(Double.valueOf(JSONUtils.verificarString(jsonCliente, COLNAMES.SALDO.getString()))); 
          
             alCliente.add(cliente);
         }
