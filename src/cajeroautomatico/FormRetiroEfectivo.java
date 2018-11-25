@@ -126,7 +126,7 @@ public class FormRetiroEfectivo extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        new FormRetiraTuTarjeta(tvImporteRetiro.getText().toString()).setVisible(true);
+        new FormRetiraTuTarjeta(this.clienteSeleccionado, montoRetiro).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
 

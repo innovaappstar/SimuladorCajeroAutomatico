@@ -26,12 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import sun.net.www.http.HttpClient;
-
-import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
+ 
 /**
  *
  * @author Kenny

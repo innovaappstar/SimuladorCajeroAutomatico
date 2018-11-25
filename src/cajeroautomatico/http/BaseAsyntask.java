@@ -26,7 +26,9 @@ public abstract class BaseAsyntask {
     
     private String nomArrayJSON;
     protected String url;
-    protected String HOST = "http://192.168.1.104:2030";
+//    protected String HOST = "http://192.168.1.104:2030";
+    protected String HOST = "http://181.177.243.94:2030";
+    
     private EHTTP ehttp;
     
     public BaseAsyntask(String nomArrayJSON, String url, EHTTP ehttp) {
